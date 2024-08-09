@@ -16,6 +16,6 @@ include_directories("${CMAKE_CURRENT_SOURCE_DIR}/modules/min-2d-engine/include")
 
 
 #add_executable(engine2d ${LIB_SOURCE_FILES})
-file(GLOB_RECURSE SOURCES src/objects/*.cpp src/*.cpp)
+file(GLOB_RECURSE SOURCES src/*.cpp)
 add_executable(shooter2d ${SOURCES})
 target_link_libraries(shooter2d engine2d)
