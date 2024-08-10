@@ -15,10 +15,14 @@ using namespace Game;
 int main() { 
     Player& p = Player::Create();
     Player& p2 = Player::Create(Vec2(0, 10));
+    p.Init();
+    p2.Init();
 
     while(1){
         p.MoveAndCollide(Vec2(0,0.5));
-        std::cout << p.origin;
+        std::cout << p.origin << "\n";
+        std::string a;
+        std::cin >> a;
     }
     
     //std::cout << r2 << "\n";

@@ -34,7 +34,6 @@ namespace Game
         {
             collider = Engine::TrianglePolygon(origin, {origin + Engine::Vec2(0, 1.6), origin + Engine::Vec2(-1.6, -3.2), origin + Engine::Vec2(1.6, -3.2)});
             p_collider = &collider;
-            Init();
         }
 
         void Rotate(double rad);

@@ -5,6 +5,7 @@
 #include "game/gameworld.h"
 
 #include <unordered_map>
+#include <cassert>
 
 
 namespace Game {
@@ -30,6 +31,7 @@ namespace Game {
             this->initialized = true;
             this->id = id_counter;
             id_counter++;
+            assert(p_collider != nullptr);
             GameWorld::_instance.AddObject(p_collider, this->id);
             return this->id;
         }

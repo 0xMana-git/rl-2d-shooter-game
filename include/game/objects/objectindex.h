@@ -3,22 +3,50 @@
 #include "game/misc/typedefs.h"
 #include "engine/misc/typedefs.h"
 #include "engine/math/vector.h"
-#include <unordered_map>
-
+#include "lib/MemoryPool.h"
+#include <memory>
 namespace Game {
     template<typename T>
     class ObjectIndex {
+        // using internal_id_t = size_t;
+        // internal_id_t _internal_id = 0;
+        // inline static internal_id_t _internal_ctr = 0;
+
+        //4096 elems by default
+        
+        //static std::vector<T> _pool;
+    protected:
+        //when object is destroyed, free memory
+        ~ObjectIndex();
     public:
-        inline static std::unordered_map<obj_id_t, T> objects_index;
-        static T& Create(const Engine::Vec2& origin) {
-            T obj(origin);
-            objects_index.emplace(obj.Init(), obj);
-            return objects_index[obj.id];
-        }
+        
+        //Only creates, does not initialize
+        static T& Create(const Engine::Vec2& origin);
 
         static T& Create() {
             return Create(Engine::Vec2(0,0));
         }
 
     };
+    //inline static ObjectIndex<T>::_pool = MemoryPool<T>;
+    namespace StaticMemoryPool {
+        template<typename T>
+        inline static MemoryPool<T> _pool;
+    }
+    template<typename T>
+    T& ObjectIndex<T>::Create(const Engine::Vec2& origin) {
+            
+            T* new_obj = StaticMemoryPool::_pool<T>.allocate();
+            //amazing
+            std::construct_at(new_obj, origin);
+            // _internal_ctr++;
+            // T& new_ref = objects_index[new_id];
+            // new_ref._internal_id = new_id;
+            return *new_obj;
+            
+        }
+    template<typename T>
+    ObjectIndex<T>::~ObjectIndex() {
+            StaticMemoryPool::_pool<T>.deallocate(static_cast<T*>(this));
+        }
 }
