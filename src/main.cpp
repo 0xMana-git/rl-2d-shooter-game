@@ -15,8 +15,6 @@ using namespace Game;
 int main() { 
     Player& p = Player::Create();
     Player& p2 = Player::Create(Vec2(0, 10));
-    p.Init();
-    p2.Init();
 
     while(1){
         p.MoveAndCollide(Vec2(0,0.5));

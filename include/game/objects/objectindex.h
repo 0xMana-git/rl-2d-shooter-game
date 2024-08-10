@@ -20,7 +20,7 @@ namespace Game {
         ~ObjectIndex();
     public:
         
-        //Only creates, does not initialize
+        //Only creates, does not call init
         static T& Create(const Engine::Vec2& origin);
 
         static T& Create() {
@@ -28,7 +28,6 @@ namespace Game {
         }
 
     };
-    //inline static ObjectIndex<T>::_pool = MemoryPool<T>;
     namespace StaticMemoryPool {
         template<typename T>
         inline static MemoryPool<T> _pool;
@@ -39,9 +38,8 @@ namespace Game {
             T* new_obj = StaticMemoryPool::_pool<T>.allocate();
             //amazing
             std::construct_at(new_obj, origin);
-            // _internal_ctr++;
-            // T& new_ref = objects_index[new_id];
-            // new_ref._internal_id = new_id;
+            //idk dude, i feel like theres no reason not to call here
+            new_obj->Init();
             return *new_obj;
             
         }
