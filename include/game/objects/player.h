@@ -7,28 +7,39 @@
 
 #include "game/objects/objectindex.h"
 
-namespace Game {
+namespace Game
+{
 
-
-    class Player : public UpdatedGameObject, public ObjectIndex<Player> {
+    class Player : public UpdatedGameObject, public ObjectIndex<Player>
+    {
 
         Engine::TrianglePolygon collider;
 
-        
-
-        
-
     public:
-        Player() : UpdatedGameObject(){
-            p_collider = &collider;
-        }
-        static Player& Create() {
-            objects_index.emplace(id_counter - 1, Player());
-            return objects_index[id_counter - 1];
-        }
-        void Rotate(double rad) {
-            
+        struct PlayerView
+        {
+            constexpr static size_t n_pixels = 16;
+            struct Pixel
+            {
+                double depth;
+                pixel_t type;
+            };
+            std::array<Pixel, n_pixels> _data;
         };
+        PlayerView _player_view;
+        // Dont use this
+        Player() {};
+
+        Player(const Engine::Vec2 &origin) : UpdatedGameObject(origin)
+        {
+            collider = Engine::TrianglePolygon(origin, {origin + Engine::Vec2(0, 1.6), origin + Engine::Vec2(-1.6, -3.2), origin + Engine::Vec2(1.6, -3.2)});
+            p_collider = &collider;
+            Init();
+        }
+
+        void Rotate(double rad);
         virtual ~Player();
+
+        PlayerView &GetView();
     };
 }
